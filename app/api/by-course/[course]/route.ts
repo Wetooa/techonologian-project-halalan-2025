@@ -15,7 +15,6 @@ export async function GET(
     });
 
     const map = new Map();
-
     filteredDataByCourse.forEach((row) => {
       row.selection.forEach((selectedSenator: string) => {
         map.set(selectedSenator, (map.get(selectedSenator) || 0) + 1);
@@ -23,7 +22,6 @@ export async function GET(
     });
 
     const result = Array.from(map.entries());
-
     return NextResponse.json({ data: result });
   } catch (message) {
     return NextResponse.json({ message }, { status: 500 });

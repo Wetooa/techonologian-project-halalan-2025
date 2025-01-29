@@ -1,5 +1,5 @@
 export default async function Home() {
-  const response = await fetch("http://localhost:3000/api/by-course/BSCS", {
+  const response = await fetch("http://localhost:3000/api/all", {
     method: "GET",
   });
   const data = await response.json();
