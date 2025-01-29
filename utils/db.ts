@@ -20,7 +20,12 @@ export async function fetchFormsData() {
   const sheet = doc.sheetsByIndex[0];
   const rows = await sheet.getRows();
 
+  const SELECTION_HEADER =
+    "Please take a moment to thoughtfully select the candidates you genuinely support for the upcoming election:";
+
   const cleanedData = rows.map((row) => {
+    const selection = row.get(SELECTION_HEADER).split(/\,?\s(?=\d+\.)/);
+
     return {
       timestamp: row.get("Column 1"),
       name: row.get("Name"),
@@ -28,9 +33,7 @@ export async function fetchFormsData() {
       studentId: row.get("Student ID"),
       course: row.get("Course"),
       isRegisteredVoter: row.get("Are you a registered voter?"),
-      selection: row.get(
-        "Please take a moment to thoughtfully select the candidates you genuinely support for the upcoming election: ",
-      ),
+      selection,
     };
   });
 
