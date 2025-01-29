@@ -24,14 +24,16 @@ export async function fetchFormsData() {
     "Please take a moment to thoughtfully select the candidates you genuinely support for the upcoming election:";
 
   const cleanedData = rows.map((row) => {
-    const selection = row.get(SELECTION_HEADER).split(/\,?\s(?=\d+\.)/);
+    const selection = Array.from(
+      row.get(SELECTION_HEADER).split(/\,?\s(?=\d+\.)/),
+    ) as string[];
 
     return {
       timestamp: row.get("Column 1"),
       name: row.get("Name"),
       email: row.get("Institutional Email"),
-      studentId: row.get("Student ID"),
-      course: row.get("Course"),
+      studentId: row.get("Student ID:"),
+      course: row.get("Course:"),
       isRegisteredVoter: row.get("Are you a registered voter?"),
       selection,
     };
