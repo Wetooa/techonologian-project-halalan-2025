@@ -1,8 +1,9 @@
 'use client'
 import Image from "next/image";
 import {useState} from "react";
-import { VerticalBarChart} from "@/components/chart-bar-horizontal";
+import {BarChartHorizontal} from "@/components/chart-bar-horizontal";
 import {DropDownMenu} from "@/components/ui/radio-group";
+import { PieChartWithLabels } from "@/components/piechart-withlabels";
 
 
 export default function Home() {
@@ -46,7 +47,9 @@ export default function Home() {
     };
     const [filterSelected, setFilterSelected] = useState(0);
     // const choiceSelected= useState("All");
-
+    const getFilter = () => {
+        return filters[filterSelected];
+    }
     return (
         <div
             className="bg-cover bg-center bg-[url('/graphics/background.png')] scroll-auto h-auto w-screen flex flex-col justify-center items-center gap-10 p-10">
@@ -64,8 +67,8 @@ export default function Home() {
                     />
                 ))}
             </div>
-            <div id="" className='w-full flex flex-row justify-center pl-5 pr-5 items-start gap-5 '>
-                <div id='filters' className="bg-[#1A1A1A] h-auto w-1/3 rounded-md ">
+            <div id="" className="w-full flex flex-col lg:flex-row justify-center  pl-5 pr-5 items-start gap-5">
+                <div id='filters' className="bg-[#1A1A1A] h-auto  xl:w-1/3 2xl:w-1/3 lg:w-1/3 w-full  rounded-md ">
                     <header className='p-3 gap-2 flex flex-row'>
                         <Image src={'/graphics/filter.png'} width={25} height={10} alt={"Filter icon"}/>
                         <p className='text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer'>
@@ -76,22 +79,27 @@ export default function Home() {
                     {filters.map((filter, index) => (
                         <div key={index} onClick={() => setFilterSelected(index)}>
                             <div
-                                className={`text-white p-3 cursor-pointer hover:bg-[#141414] ${filterSelected === index ? 'bg-[#333333]' : ''}`}>
+                                className={`text-white p-3 cursor-pointer hover:bg-[#141414]  ${filterSelected === index ? 'bg-[#333333]' : ''}`}>
                                 <p>{filter}</p>
                             </div>
                             <hr/>
                         </div>
-
-
                     ))}
                     <div className= {`flex justify-center items-center p-10 ${filters[filterSelected] === "By Senator" ? '' : 'hidden' }`}>
                         <DropDownMenu senatorNames = {senatorNames} />
                     </div>
 
                 </div>
-                <div id='charts' className="bg-[#1A1A1A] w-full h-full rounded-md p-5 flex flex-col gap-5 bg-opacity-50">
+                <div id='charts' className="bg-[#1A1A1A] w-full  h-full rounded-md p-5 flex flex-col gap-5 bg-opacity-50">
+                    {
+                        getFilter() === "All Departments"
+                            ? <PieChartWithLabels />
+                            : <BarChartHorizontal
+                                title={filters[filterSelected]}
+                                description={filterDescriptions[filters[filterSelected]]}
+                            />
+                    }
 
-                    <VerticalBarChart title={filters[filterSelected]} description={filterDescriptions[filters[filterSelected]]} />
                 </div>
 
 

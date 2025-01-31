@@ -1,15 +1,11 @@
 "use client"
-import { TrendingUp } from "lucide-react"
+
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect, useState } from "react"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
-interface ChartProps{
-  title: string;
-  description: string;
-}
-
-//testData
 const chartData = [
   { month: "January", desktop: 186 },
   { month: "February", desktop: 305 },
@@ -18,48 +14,70 @@ const chartData = [
   { month: "May", desktop: 209 },
   { month: "June", desktop: 214 },
 ]
+interface ChartProps{
+  title: string
+  description: string
+}
 
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
 
+const calculateChartHeight = (dataLength: number) => {
+  return Math.max(300, dataLength * 50) // Minimum height of 300px, or 50px per data point
+}
 
+export function BarChartHorizontal(props: ChartProps) {
+  const [chartHeight, setChartHeight] = useState(calculateChartHeight(chartData.length))
 
-export function VerticalBarChart(props : ChartProps) {
+  useEffect(() => {
+    const handleResize = () => {
+      setChartHeight(calculateChartHeight(chartData.length))
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
-        <CardDescription>{props.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            layout="vertical"
-            margin={{
-              left: -20,
-            }}
-          >
-            <XAxis type="number" dataKey="desktop" hide />
-            <YAxis
-              dataKey="month"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={5} />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+      <Card className="w-full max-w-4xl mx-auto">
+        <CardHeader>
+          <CardTitle>{props.title}</CardTitle>
+          <CardDescription>{props.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig} className="w-full" style={{ height: `${chartHeight}px` }}>
+            <BarChart
+                accessibilityLayer
+                data={chartData}
+                layout="vertical"
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
+                width={undefined}
+                height={undefined}
+            >
+              <XAxis type="number" dataKey="desktop" hide />
+              <YAxis
+                  dataKey="month"
+                  type="category"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  width={100}
+                  tickFormatter={(value) => (window.innerWidth > 640 ? value : value.slice(0, 3))}
+              />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={5} />
+            </BarChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
   )
 }
 
