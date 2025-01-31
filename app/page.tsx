@@ -1,12 +1,29 @@
 'use client'
 import Image from "next/image";
 import {useState} from "react";
+import { VerticalBarChart} from "@/components/chart-bar-horizontal";
+import {DropDownMenu} from "@/components/ui/radio-group";
+
+
 export default function Home() {
-    // const response = await fetch("http://localhost:3000/api/all", {
-    //   method: "GET",
-    // });
-    // const data = await response.json();
-    // console.log(data);
+    // fetch("http://localhost:3000/api/all", {
+    //     method: "GET",
+    // })
+    //     .then(response => {
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         return response.json();
+    //     })
+    //     .then(data => {
+    //         console.log(data);
+    //     })
+    //     .catch(error => {
+    //         console.error('There was a problem with the fetch operation:', error);
+    //     });
+
+
+
     const senatorNames = [
         "Bam Aquino",
         "Pangalinan Kiko",
@@ -20,6 +37,13 @@ export default function Home() {
         "Casiño, Teddy & Marquez, Norman"
     ];
     const filters = ["All", "All Departments", "All Voter's Detail", "By Department", "By Senator"];
+    const filterDescriptions = {
+        "All": "Displays all available data without any filtering.",
+        "All Departments": "Shows data related to all departments collectively.",
+        "All Voter's Detail": "Provides comprehensive details of all voters.",
+        "By Department": "Filters data based on specific departments.",
+        "By Senator": "Filters data based on specific senators or their associated categories."
+    };
     const [filterSelected, setFilterSelected] = useState(0);
     // const choiceSelected= useState("All");
 
@@ -60,34 +84,14 @@ export default function Home() {
 
 
                     ))}
-                    <div
-                        className={`h-32 flex flex-col gap-3 text-white ${filters[filterSelected] === "By Senator" ? '' : "hidden"}`}>
-                        <p>Senator Name</p>
-
-                        <div className="relative inline-block text-left">
-                            <button
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">
-                                Menu
-                            </button>
-
-                            <div
-                                className="dropdown-content absolute hidden bg-white text-black shadow-lg rounded-md mt-2 w-48 group-hover:block">
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100">Option 1</a>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100">Option 2</a>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100">Option 3</a>
-                            </div>
-                        </div>
-
+                    <div className= {`flex justify-center items-center p-10 ${filters[filterSelected] === "By Senator" ? '' : 'hidden' }`}>
+                        <DropDownMenu senatorNames = {senatorNames} />
                     </div>
+
                 </div>
-                <div id='charts' className="bg-[#1A1A1A] w-full h-full rounded-md p-5">
-                    <header className='flex flex-row gap-2'>
-                        <Image src={'/graphics/graph.png'} width={30} height={10} alt={"Chart icon"}
-                        />
-                        <p className='text-white font-bold font-sans lg:text-3xl sm-text-2xl'>
-                            {filters[filterSelected]}
-                        </p>
-                    </header>
+                <div id='charts' className="bg-[#1A1A1A] w-full h-full rounded-md p-5 flex flex-col gap-5 bg-opacity-50">
+
+                    <VerticalBarChart title={filters[filterSelected]} description={filterDescriptions[filters[filterSelected]]} />
                 </div>
 
 
