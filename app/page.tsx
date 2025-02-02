@@ -6,23 +6,69 @@ import {DropDownMenu} from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
 
 
-export default function Home() {
-    // fetch("http://localhost:3000/api/all", {
-    //     method: "GET",
-    // })
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     })
-    //     .then(data => {
-    //         console.log(data);
-    //     })
-    //     .catch(error => {
-    //         console.error('There was a problem with the fetch operation:', error);
-    //     });
+function fetchAll(){
+    fetch("http://localhost:3000/api/all", {
+        method: "GET",
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
 
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+}
+
+function fetchByCourse(course : string){
+    fetch(`http://localhost:3000/api/by-course/${course}`, {
+        method: "GET",
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+function fetchBySenator(senatorNumber : string){
+    fetch(`http://localhost:3000/api/by-senator/${senatorNumber}`, {
+        method: "GET",
+
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+
+        })
+        .catch(error => {
+            console.error('There was a problem fetching results bySenator', error);
+        });
+}
+export default function Home() {
+
+    fetchAll();
+    fetchBySenator("1");
+    fetchByCourse("BSCS");
 
 
     const senatorNames = [
