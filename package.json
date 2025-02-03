@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
     "google-auth-library": "^9.15.1",
     "google-spreadsheet": "^4.1.4",
     "next": "15.1.6",

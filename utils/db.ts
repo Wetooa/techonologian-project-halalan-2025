@@ -20,23 +20,29 @@ export async function fetchFormsData() {
   const sheet = doc.sheetsByIndex[0];
   const rows = await sheet.getRows();
 
-  const SELECTION_HEADER =
-    "Please take a moment to thoughtfully select the candidates you genuinely support for the upcoming election:";
+  const SHEET_TITLES: { [key: string]: string } = {
+    timestamp: "Column 1",
+    name: "Name",
+    email: "Institutional Email",
+    studentId: "Student ID:",
+    course: "Course:",
+    isRegisteredVoter: "Are you a registered voter?",
+    selection:
+      "Please take a moment to thoughtfully select the candidates you genuinely support for the upcoming election:",
+  };
 
   const cleanedData = rows.map((row) => {
-    const selection = Array.from(
-      row.get(SELECTION_HEADER).split(/\,?\s(?=\d+\.)/),
+    const cleanedRow: { [key: string]: string | string[] } = {};
+
+    Object.keys(SHEET_TITLES).forEach((key) => {
+      cleanedRow[key] = row.get(SHEET_TITLES[key]);
+    });
+
+    cleanedRow.selection = Array.from(
+      (cleanedRow.selection as string).split(/\,?\s(?=\d+\.)/),
     ) as string[];
 
-    return {
-      timestamp: row.get("Column 1"),
-      name: row.get("Name"),
-      email: row.get("Institutional Email"),
-      studentId: row.get("Student ID:"),
-      course: row.get("Course:"),
-      isRegisteredVoter: row.get("Are you a registered voter?"),
-      selection,
-    };
+    return cleanedRow;
   });
 
   return { data: cleanedData, message: "Fetch Successful" };
