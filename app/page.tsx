@@ -123,8 +123,7 @@ export default function Home() {
                 className="mb-10  cursor-pointer hover:animate-pulse"
                 onClick={() => redirect('/')}
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                {/*{senatorNames.map((senator, index) => (*/}
+            <div className="grid sm:grid-flow-col md:grid-flow-col lg:grid-flow-col   grid-rows-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">                {/*{senatorNames.map((senator, index) => (*/}
                 {/*  <Image*/}
                 {/*    key={index}*/}
                 {/*    src={`/senators/${index + 1}.png`}*/}
@@ -141,7 +140,7 @@ export default function Home() {
                         .slice(0, 12)
                         .map((senator, index) => (
                             <div key={index}
-                                 className='flex items-center bg-[#FDFDFD]   drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105'>
+                                 className='flex items-center bg-[#FDFDFD]   drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105 cursor-pointer ' onClick={() =>redirect(`https://www.google.com/search?q=${senator[0].split('.')[1]}`)}>
                                 <div className='flex flex-row items-center gap-5 '>
                                     <p className={`font-bold font-sans select-none ${index + 1 < 10 ? 'text-5xl' : 'text-3xl'}`}>{index + 1}</p>
                                     <Image src={`/senators/${senator[0].split('.')[0]}.png`}
