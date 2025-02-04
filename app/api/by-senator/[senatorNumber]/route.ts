@@ -9,7 +9,6 @@ export async function GET(
     const senatorNumber = params.senatorNumber;
     const { data } = await fetchFormsData();
 
-    // NOTE: not sure what to do pa with this data
     const filteredResult = data.filter((row) => {
       return row.selection.some((selectedSenator: string) => {
         return !!selectedSenator.match(`^${senatorNumber}\\.`);

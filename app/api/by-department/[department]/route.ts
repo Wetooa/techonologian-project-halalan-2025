@@ -9,7 +9,6 @@ export async function GET(
     const department = params.department;
     const { data } = await fetchFormsData();
 
-    // FIX: BASIC IMPLEMENTATION! DATA NOT CLEANED YET!
     const filteredDataByCourse = data.filter((row) => {
       return !!row.course.match(`${department}`);
     });
