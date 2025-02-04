@@ -1,34 +1,31 @@
 'use client'
 import Image from "next/image";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {BarChartHorizontal} from "@/components/chart-bar-horizontal";
 import {DropDownMenu} from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
 import SenatorCard from "@/components/ui/senator-card";
+import {type} from "node:os";
 
 
-function fetchAll(){
-    fetch("http://localhost:3000/api/all", {
-        method: "GET",
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
+async function fetchAll() {
+  try {
+    const response = await fetch("http://localhost:3000/api/all", {
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
 
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-
+    return data;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
 }
 
 function fetchByCourse(course : string){
-    fetch(`http://localhost:3000/api/by-course/${course}`, {
+    return fetch(`http://localhost:3000/api/by-course/${course}`, {
         method: "GET",
     })
         .then(response => {
@@ -65,20 +62,43 @@ function fetchBySenator(senatorNumber : string){
             console.error('There was a problem fetching results bySenator', error);
         });
 }
+interface SenatorData {
+name :string;
+votes: number
+}
 export default function Home() {
-    fetchAll();
-    const senatorNames = [
-        "Bam Aquino",
-        "Pangalinan Kiko",
-        "De Guzman Ka Leody",
-        "Espiritu Luke",
-        "Ong Doc Willie",
-        "Brosas Arlene",
-        "Matula, Atty Sonny & Mendoza, Heidi",
-        "Castro Teacher France",
-        "Lacson Ping",
-        "Casiño, Teddy & Marquez, Norman"
-    ];
+  const [senatorAllData, setAllSenatorData] = useState<Record<string, number>>({});
+  const [departmentData, setDepartmentData] = useState({});
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const senatorData = await fetchAll(); // ✅ Await fetchAll() to get data
+                let transformedData: Record<string, number> = {};
+                Object.values(senatorData).forEach((array) => {
+                    if (Array.isArray(array)) {
+                        array.forEach(([name, votes]) => {
+                            const cleanedName = name.replace(/^\d+\.\s*/, "");
+                            transformedData[cleanedName] = votes;
+                        });
+                    }
+                });
+                setAllSenatorData(transformedData);
+                console.log("Transformed Senator Data:", transformedData);
+            } catch (error) {
+                console.error("Error fetching senator data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        console.log("Updated Senator All Data:", senatorAllData);
+    }, [senatorAllData]);
+
+
+
+
     const filters = ["All", "All Departments",  "By Department", "By Senator"];
     const filterDescriptions = {
         "All": "Displays all available data without any filtering.",
@@ -116,7 +136,7 @@ export default function Home() {
                         </div>
                     ))}
                     <div className= {`flex justify-center items-center p-10 ${filterSelected === "By Senator" ? '' : 'hidden' }`}>
-                        <DropDownMenu senatorNames = {senatorNames} />
+                        {/*<DropDownMenu senatorNames = {senatorNames} />*/}
                     </div>
 
                 </div>
