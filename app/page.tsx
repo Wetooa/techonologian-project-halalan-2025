@@ -5,6 +5,7 @@ import {BarChartHorizontal} from "@/components/chart-bar-horizontal";
 import {DropDownMenu} from "@/components/ui/radio-group";
 import {PieChartWithLabels} from "@/components/piechart-withlabels";
 import {isArray} from "google-spreadsheet/src/lib/lodash";
+import {redirect} from "next/navigation";
 
 function fetchAll() {
     return fetch("http://localhost:3000/api/all", {
@@ -120,6 +121,7 @@ export default function Home() {
                 width={600}
                 height={600}
                 className="mb-10  cursor-pointer hover:animate-pulse"
+                onClick={() => redirect('/')}
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 {/*{senatorNames.map((senator, index) => (*/}
@@ -139,15 +141,17 @@ export default function Home() {
                         .slice(0, 12)
                         .map((senator, index) => (
                             <div key={index}
-                                 className='flex items-center bg-[#FDFDFD]  drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105'>
-                                <div className='flex flex-row items-center gap-5'>
-                                    <p className={`font-bold ${index + 1 < 10 ? 'text-5xl' : 'text-3xl'}`}>{index + 1}</p>
+                                 className='flex items-center bg-[#FDFDFD]   drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105'>
+                                <div className='flex flex-row items-center gap-5 '>
+                                    <p className={`font-bold font-sans select-none ${index + 1 < 10 ? 'text-5xl' : 'text-3xl'}`}>{index + 1}</p>
                                     <Image src={`/senators/${senator[0].split('.')[0]}.png`}
                                            alt={senator[0].split('.')[1]} height={50} width={50}
-                                           className='rounded-full bg-gray-500 shadow-md'/>
-                                    <p className={`font-bold ${senator[0].split('.')[1].length > 30 ? 'text-md' : 'text-xl'}`}>{senator[0].split('.')[1]}</p>
+                                           className='rounded-full  bg-gray-500 shadow-md'/>
+                                    <p className={`font-bold  font-sans ${senator[0].split('.')[1].length > 30 ? 'text-sm' : 'text-lg'} sm:text-base md:text-xl lg:text-2xl select-none`}>
+                                        {senator[0].split('.')[1]}
+                                    </p>
                                 </div>
-                                <p className='justify-end font-bold text-2xl'>
+                                <p className='justify-end font-bold text-2xl font-sans select-none'>
                                     {totalVotes ? ((senator[1] / totalVotes) * 100).toFixed(1) + "%" : "0%"}
                                 </p>
 
@@ -174,7 +178,7 @@ export default function Home() {
                             height={10}
                             alt={"Filter icon"}
                         />
-                        <p className="text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">
+                        <p className="  text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">
                             FILTERS
                         </p>
                     </header>
@@ -265,6 +269,15 @@ export default function Home() {
                     )}
                 </div>
             </div>
+            <footer className='mt-10'>
+                <Image
+                    src={'/graphics/footer.png'}
+                    onClick={() => redirect("")}
+                    width={400}
+                    height={300}
+                    alt={"Footer"}
+                />
+            </footer>
         </div>
     );
 }
