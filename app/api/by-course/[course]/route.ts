@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { course: string } },
+  { params }: { params: { course: string } }
 ) {
   try {
     const course = params.course;
@@ -22,7 +22,7 @@ export async function GET(
     });
 
     const result = Array.from(map.entries());
-    return NextResponse.json({ data: result });
+    return NextResponse.json({ data: result, course });
   } catch (message) {
     return NextResponse.json({ message }, { status: 500 });
   }
