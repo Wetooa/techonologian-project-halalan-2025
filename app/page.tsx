@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
@@ -62,7 +62,10 @@ function fetchBySenator(senatorNumber: string) {
     });
 }
 
+export const ChosenSenate = createContext(null);
+
 export default function Home() {
+  const [senateSelected, setSenateSelected] = useState(null);
   const [allData, setAllData] = useState<any[]>([]);
   const [courseData, setCourseData] = useState<any>(null);
   const [senatorData, setSenatorData] = useState<any[]>([]);
@@ -72,17 +75,19 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const allResponse = await fetchAll();
-        // const courseResponse = await fetchByCourse("BSCS");
-        const senatorResponse = await fetchBySenator("2");
-
+        const courseResponse = await fetchByCourse("BSCS");
+        let senatorResponse = null;
+        if (senateSelected) {
+          senatorResponse = await fetchBySenator(senateSelected);
+        }
         setAllData(() => {
           return allResponse;
         });
         setSenatorData(senatorResponse);
-        // setCourseData(courseResponse);
+        setCourseData(courseResponse);
 
         // console.log("All Data:", allResponse);
-        // console.log("Course Data:", courseResponse);
+        console.log("Course Data:", courseResponse);
         // console.log("Senator Data:", senatorResponse);
       } catch (error) {
         console.error("There was a problem fetching data:", error);
@@ -93,21 +98,16 @@ export default function Home() {
     const intervalId = setInterval(fetchData, 50000000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [senateSelected]);
 
   useEffect(() => {
     // console.log("Updated Data being used: ", allData);
-    // console.log("The senator Selected: ", senatorData);
+    console.log("The senator Selected: ", senatorData);
     console.log("THe courses: ", courseData);
-  }, [allData, senatorData]);
+    console.log("The senate selected: ", senateSelected);
+  }, [senatorData, senateSelected, courseData]);
 
-
-  const filters = [
-    "All",
-    "All Departments",
-    "By Department",
-    "By Senator",
-  ];
+  const filters = ["All", "All Departments", "By Department", "By Senator"];
   const filterDescriptions = {
     All: "Displays all available data without any filtering.",
     "All Departments": "Shows data related to all departments collectively.",
@@ -173,10 +173,14 @@ export default function Home() {
           ))}
           <div
             className={`flex justify-center items-center p-10 ${
-               filterSelected === "By Senator" ? "" : "hidden"
+              filterSelected === "By Senator" ? "" : "hidden"
             }`}
           >
-            <DropDownMenu senatorNames={allData} />
+            <ChosenSenate.Provider
+              value={{ senateSelected, setSenateSelected }}
+            >
+              <DropDownMenu senatorNames={allData} />
+            </ChosenSenate.Provider>
           </div>
         </div>
         <div
@@ -185,7 +189,7 @@ export default function Home() {
         >
           {filterSelected === "All Departments" ? (
             <PieChartWithLabels />
-          ) : filterSelected  === "By Senator" ? (
+          ) : filterSelected === "By Senator" ? (
             <BarChartHorizontal
               title={filterSelected}
               description={filterDescriptions[filterSelected]}

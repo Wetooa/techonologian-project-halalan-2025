@@ -6,9 +6,9 @@ export async function GET(
   { params }: { params: { senatorNumber: string } }
 ) {
   try {
-    console.log("Params: ", params);
+    // console.log("Params: ", params);
     const senatorNumber = params.senatorNumber;
-    console.log("Senate num: ", senatorNumber);
+    // console.log("Senate num: ", senatorNumber);
     const { data } = await fetchFormsData();
 
     // Log the raw data
@@ -22,7 +22,7 @@ export async function GET(
     });
 
     // Log the filtered result
-    console.log("Filtered Result:", JSON.stringify(filteredResult, null, 2));
+    // console.log("Filtered Result:", JSON.stringify(filteredResult, null, 2));
 
     return NextResponse.json({ data: filteredResult, senatorNumber });
   } catch (message) {
