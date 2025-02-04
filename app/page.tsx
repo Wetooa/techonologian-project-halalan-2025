@@ -1,48 +1,118 @@
 "use client";
-"use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
-import { DropDownMenu } from "@/components/ui/radio-group";
 import { useState, useEffect } from "react";
 import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
 
-export default function Home() {
-  const [senatorNames, setSenatorNames] = useState<string[]>([]);
-  const [senatorCounts, setSenatorCounts] = useState<number[]>([]);
-  const [Fulldata, setData] = useState<any[]>([]);
+function fetchAll() {
+  return fetch("http://localhost:3000/api/all", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      return data.data;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+      return null;
+    });
+}
 
+function fetchByCourse(course: string) {
+  return fetch(`http://localhost:3000/api/by-course/${course}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data.data;
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
+
+function fetchBySenator(senatorNumber: string) {
+  return fetch(`http://localhost:3000/api/by-senator/${senatorNumber}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      return data.data;
+    })
+    .catch((error) => {
+      console.error("There was a problem fetching results bySenator", error);
+    });
+}
+
+export default function Home() {
+  const [allData, setAllData] = useState<any[]>([]);
+  const [courseData, setCourseData] = useState<any>(null);
+  const [senatorData, setSenatorData] = useState<any[]>([]);
+
+  // Fetch data and set up polling
   useEffect(() => {
-    const fetchdata = () => {
-      fetch("http://localhost:3000/api/all", {
-        method: "GET",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("data received: ", data);
-          setData(data);
-          const senates = data.data.map(([senator, count]) => senator);
-          setSenatorNames(senates);
-          const counts = data.data.map(([senator, count]) => count);
-          setSenatorCounts(counts);
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
+    const fetchData = async () => {
+      try {
+        const allResponse = await fetchAll();
+        const courseResponse = await fetchByCourse("BSCS");
+        const senatorResponse = await fetchBySenator("2");
+
+        setAllData(() => {
+          return allResponse;
         });
+        setSenatorData(senatorResponse);
+        setCourseData(courseResponse);
+
+        // console.log("All Data:", allResponse);
+        console.log("Course Data:", courseResponse);
+        // console.log("Senator Data:", senatorResponse);
+      } catch (error) {
+        console.error("There was a problem fetching data:", error);
+      }
     };
-    fetchdata();
-    const intervalId = setInterval(fetchdata, 5000);
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    // console.log("Updated Data being used: ", allData);
+    // console.log("The senator Selected: ", senatorData);
+    console.log("THe courses: ", courseData);
+  }, [allData, senatorData]);
+
+  const senatorNames = [
+    "Bam Aquino",
+    "Pangalinan Kiko",
+    "De Guzman Ka Leody",
+    "Espiritu Luke",
+    "Ong Doc Willie",
+    "Brosas Arlene",
+    "Matula, Atty Sonny & Mendoza, Heidi",
+    "Castro Teacher France",
+    "Lacson Ping",
+    "Casiño, Teddy & Marquez, Norman",
+  ];
   const filters = [
     "All",
     "All Departments",
@@ -130,11 +200,17 @@ export default function Home() {
         >
           {getFilter() === "All Departments" ? (
             <PieChartWithLabels />
+          ) : getFilter() === "By Senator" ? (
+            <BarChartHorizontal
+              title={filters[filterSelected]}
+              description={filterDescriptions[filters[filterSelected]]}
+              data={allData}
+            />
           ) : (
             <BarChartHorizontal
               title={filters[filterSelected]}
               description={filterDescriptions[filters[filterSelected]]}
-              data={Fulldata}
+              data={allData}
             />
           )}
         </div>
