@@ -24,10 +24,10 @@ export function DropDownMenu({ senatorNames }: DropDownMenuProps) {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">{selectedSenator}</Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start" side="bottom">
+            <DropdownMenuContent className="w-56 max-h-60 overflow-y-auto" align="start" side="bottom">
                 <DropdownMenuLabel>Senator Names</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={selectedSenator} onValueChange={setSelectedSenator}>
+                <DropdownMenuRadioGroup value={selectedSenator} onValueChange={setSelectedSenator} className="scroll-auto">
                     {senatorNames.map((senatorName) => (
                         <DropdownMenuRadioItem value={senatorName} key={senatorName}>
                             {senatorName}

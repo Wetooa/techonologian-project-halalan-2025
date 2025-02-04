@@ -58,6 +58,7 @@ export function BarChartHorizontal(props: ChartProps) {
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
+
       <CardHeader>
         <CardTitle>{props.title}</CardTitle>
         <CardDescription>{props.description}</CardDescription>
@@ -65,7 +66,7 @@ export function BarChartHorizontal(props: ChartProps) {
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="w-full"
+          className="w-full "
           style={{ height: `${chartHeight}px` }}
         >
           <BarChart

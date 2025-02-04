@@ -90,7 +90,7 @@ export default function Home() {
     };
     fetchData();
 
-    const intervalId = setInterval(fetchData, 5000);
+    const intervalId = setInterval(fetchData, 50000000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -101,22 +101,10 @@ export default function Home() {
     console.log("THe courses: ", courseData);
   }, [allData, senatorData]);
 
-  const senatorNames = [
-    "Bam Aquino",
-    "Pangalinan Kiko",
-    "De Guzman Ka Leody",
-    "Espiritu Luke",
-    "Ong Doc Willie",
-    "Brosas Arlene",
-    "Matula, Atty Sonny & Mendoza, Heidi",
-    "Castro Teacher France",
-    "Lacson Ping",
-    "Casiño, Teddy & Marquez, Norman",
-  ];
+
   const filters = [
     "All",
     "All Departments",
-    "All Voter's Detail",
     "By Department",
     "By Senator",
   ];
@@ -128,11 +116,8 @@ export default function Home() {
     "By Senator":
       "Filters data based on specific senators or their associated categories.",
   };
-  const [filterSelected, setFilterSelected] = useState(0);
+  const [filterSelected, setFilterSelected] = useState("All");
   // const choiceSelected= useState("All");
-  const getFilter = () => {
-    return filters[filterSelected];
-  };
   return (
     <div className="bg-cover bg-center bg-[url('/graphics/background.png')] scroll-auto h-auto w-screen flex flex-col justify-center items-center gap-10 p-10">
       <Image
@@ -143,16 +128,16 @@ export default function Home() {
         className="mb-10  cursor-pointer hover:animate-pulse"
       />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {senatorNames.map((senator, index) => (
-          <Image
-            key={index}
-            src={`/senators/${index + 1}.png`}
-            alt={`Senator ${senator}`}
-            width={125}
-            height={125}
-            className="self-center w-full sm:w-32 md:w-40 lg:w-44 hover:scale-105"
-          />
-        ))}
+        {/*{senatorNames.map((senator, index) => (*/}
+        {/*  <Image*/}
+        {/*    key={index}*/}
+        {/*    src={`/senators/${index + 1}.png`}*/}
+        {/*    alt={`Senator ${senator}`}*/}
+        {/*    width={125}*/}
+        {/*    height={125}*/}
+        {/*    className="self-center w-full sm:w-32 md:w-40 lg:w-44 hover:scale-105"*/}
+        {/*  />*/}
+        {/*))}*/}
       </div>
       <div
         id=""
@@ -175,10 +160,10 @@ export default function Home() {
           </header>
           <hr />
           {filters.map((filter, index) => (
-            <div key={index} onClick={() => setFilterSelected(index)}>
+            <div key={index} onClick={() => setFilterSelected(filter)}>
               <div
                 className={`text-white p-3 cursor-pointer hover:bg-[#141414]  ${
-                  filterSelected === index ? "bg-[#333333]" : ""
+                  filterSelected === filter ? "bg-[#333333]" : ""
                 }`}
               >
                 <p>{filter}</p>
@@ -188,28 +173,28 @@ export default function Home() {
           ))}
           <div
             className={`flex justify-center items-center p-10 ${
-              filters[filterSelected] === "By Senator" ? "" : "hidden"
+               filterSelected === "By Senator" ? "" : "hidden"
             }`}
           >
-            <DropDownMenu senatorNames={senatorNames} />
+            <DropDownMenu senatorNames={allData} />
           </div>
         </div>
         <div
           id="charts"
           className="bg-[#1A1A1A] w-full  h-full rounded-md p-5 flex flex-col gap-5 bg-opacity-50"
         >
-          {getFilter() === "All Departments" ? (
+          {filterSelected === "All Departments" ? (
             <PieChartWithLabels />
-          ) : getFilter() === "By Senator" ? (
+          ) : filterSelected  === "By Senator" ? (
             <BarChartHorizontal
-              title={filters[filterSelected]}
-              description={filterDescriptions[filters[filterSelected]]}
+              title={filterSelected}
+              description={filterDescriptions[filterSelected]}
               data={allData}
             />
           ) : (
             <BarChartHorizontal
-              title={filters[filterSelected]}
-              description={filterDescriptions[filters[filterSelected]]}
+              title={filterSelected}
+              description={filterDescriptions[filterSelected]}
               data={allData}
             />
           )}
