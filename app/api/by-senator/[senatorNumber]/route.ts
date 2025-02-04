@@ -17,7 +17,7 @@ export async function GET(
     // Filter the data
     const filteredResult = data.filter((row) => {
       return row.selection.some((selectedSenator: string) => {
-        return !!selectedSenator.match(`${senatorNumber}\\.`);
+        return !!selectedSenator.match(`^${senatorNumber}\\.`);
       });
     });
 
