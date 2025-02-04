@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
@@ -62,6 +62,19 @@ function fetchBySenator(senatorNumber: string) {
     });
 }
 
+function getDataCountForSenate(data) {
+  const courseCounts = {};
+
+  data.forEach((student) => {
+    const course = student.course;
+    if (course) {
+      courseCounts[course] = (courseCounts[course] || 0) + 1;
+    }
+  });
+
+  return Object.entries(courseCounts);
+}
+
 export const ChosenSenate = createContext(null);
 
 export default function Home() {
@@ -101,11 +114,11 @@ export default function Home() {
   }, [senateSelected]);
 
   useEffect(() => {
-    // console.log("Updated Data being used: ", allData);
+    console.log("Updated Data being used: ", allData);
     console.log("The senator Selected: ", senatorData);
-    console.log("THe courses: ", courseData);
+    // console.log("THe courses: ", courseData);
     console.log("The senate selected: ", senateSelected);
-  }, [senatorData, senateSelected, courseData]);
+  }, [allData, senatorData, senateSelected, courseData]);
 
   const filters = ["All", "All Departments", "By Department", "By Senator"];
   const filterDescriptions = {
@@ -190,11 +203,17 @@ export default function Home() {
           {filterSelected === "All Departments" ? (
             <PieChartWithLabels />
           ) : filterSelected === "By Senator" ? (
-            <BarChartHorizontal
-              title={filterSelected}
-              description={filterDescriptions[filterSelected]}
-              data={allData}
-            />
+            !senatorData ? (
+              <p className="text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">
+                Choose a senator
+              </p>
+            ) : (
+              <BarChartHorizontal
+                title={filterSelected}
+                description={filterDescriptions[filterSelected]}
+                data={getDataCountForSenate(senatorData)}
+              />
+            )
           ) : (
             <BarChartHorizontal
               title={filterSelected}

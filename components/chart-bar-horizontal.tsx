@@ -35,6 +35,7 @@ const calculateChartHeight = (dataLength: number) => {
 };
 
 export function BarChartHorizontal(props: ChartProps) {
+  console.log("BarChartHorizontal props: ", props);
   const chartData = props.data
     ? props.data.map(([senatorName, votes]) => ({
         senatorName,
@@ -58,7 +59,6 @@ export function BarChartHorizontal(props: ChartProps) {
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
-
       <CardHeader>
         <CardTitle>{props.title}</CardTitle>
         <CardDescription>{props.description}</CardDescription>
