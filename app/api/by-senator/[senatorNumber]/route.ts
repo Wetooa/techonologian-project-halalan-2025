@@ -6,9 +6,9 @@ export async function GET(
   { params }: { params: { senatorNumber: string } }
 ) {
   try {
-    // console.log("Params: ", params);
+    console.log("Params: ", params);
     const senatorNumber = params.senatorNumber;
-    // console.log("Senate num: ", senatorNumber);
+    console.log("Senate num: ", senatorNumber);
     const { data } = await fetchFormsData();
 
     // Log the raw data

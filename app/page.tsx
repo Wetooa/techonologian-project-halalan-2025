@@ -72,17 +72,17 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const allResponse = await fetchAll();
-        const courseResponse = await fetchByCourse("BSCS");
+        // const courseResponse = await fetchByCourse("BSCS");
         const senatorResponse = await fetchBySenator("2");
 
         setAllData(() => {
           return allResponse;
         });
         setSenatorData(senatorResponse);
-        setCourseData(courseResponse);
+        // setCourseData(courseResponse);
 
         // console.log("All Data:", allResponse);
-        console.log("Course Data:", courseResponse);
+        // console.log("Course Data:", courseResponse);
         // console.log("Senator Data:", senatorResponse);
       } catch (error) {
         console.error("There was a problem fetching data:", error);
