@@ -1,6 +1,31 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 
+export function courseToDepartment(course: string) {
+  return {
+    BSPSYCH: "CASE",
+    STEM: "STEM",
+    BMMA: "CASE",
+    BSME: "COEA",
+    BSHM: "CMB",
+    BSIT: "CCS",
+    BSBIO: "CASE",
+    BSIE: "COEA",
+    BSCE: "COEA",
+    BSCPE: "COEA",
+    BSCHE: "COEA",
+    BSEE: "COEA",
+    BSARCH: "COEA",
+    BSED: "CASE",
+    BSA: "CMB",
+    BSEM: "CASE",
+    BSMA: "CMB",
+    BSCS: "CCS",
+    BSN: "CNHS",
+    BSBA: "CMB",
+  }[course];
+}
+
 export async function fetchFormsData() {
   const URL = process.env.SHEET_ID;
 
@@ -37,6 +62,10 @@ export async function fetchFormsData() {
     Object.keys(SHEET_TITLES).forEach((key) => {
       cleanedRow[key] = row.get(SHEET_TITLES[key]);
     });
+
+    cleanedRow.department = courseToDepartment(
+      cleanedRow.course as string,
+    ) as string;
 
     cleanedRow.selection = Array.from(
       (cleanedRow.selection as string).split(/\,?\s(?=\d+\.)/),

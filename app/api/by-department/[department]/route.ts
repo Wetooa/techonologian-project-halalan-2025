@@ -3,15 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { course: string } },
+  { params }: { params: { department: string } },
 ) {
   try {
-    const course = params.course;
+    const department = params.department;
     const { data } = await fetchFormsData();
 
     // FIX: BASIC IMPLEMENTATION! DATA NOT CLEANED YET!
     const filteredDataByCourse = data.filter((row) => {
-      return !!row.course.match(`${course}`);
+      return !!row.course.match(`${department}`);
     });
 
     const map = new Map();
