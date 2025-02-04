@@ -1,8 +1,6 @@
 "use client";
 
 import { Bar, BarChart, XAxis, YAxis, LabelList, ResponsiveContainer } from "recharts";
-import { useEffect, useState } from "react";
-
 import {
     Card,
     CardContent,
@@ -36,7 +34,7 @@ const calculateChartHeight = (dataLength: number) => {
 
 export function BarChartHorizontal(props: ChartProps) {
     const chartData = props.data
-        ? props.data.map(([senatorName, votes]) => ({
+        ? props.data.map(([senatorName, votes] ) => ({
             senatorName,
             votes,
         }))
@@ -68,7 +66,7 @@ export function BarChartHorizontal(props: ChartProps) {
                                 margin={{
                                     top: 5,
                                     right: 30,
-                                    left: 10,
+                                    left: 0,
                                     bottom: 5,
                                 }}
                             >
@@ -80,9 +78,9 @@ export function BarChartHorizontal(props: ChartProps) {
                                     tickMargin={10}
                                     axisLine={false}
                                     width={150}
-                                    tickFormatter={(value) =>
-                                        window.innerWidth > 640 ? value : value.slice(0, 3)
-                                    }
+                                    // tickFormatter={(value) =>
+                                    //     window.innerWidth > 640 ? value : value.slice(0, 3)
+                                    // }
                                 />
                                 <ChartTooltip
                                     cursor={false}
@@ -97,7 +95,7 @@ export function BarChartHorizontal(props: ChartProps) {
                                     <LabelList
                                         dataKey="votes"
                                         position="right"
-                                        formatter={(value) => {
+                                        formatter={(value : never) => {
                                             const percentage = totalVotes
                                                 ? ((value / totalVotes) * 100).toFixed(1) + "%"
                                                 : "0%";
