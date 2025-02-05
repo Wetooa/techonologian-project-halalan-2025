@@ -121,9 +121,9 @@ export default function Home() {
   }, [senateSelected]);
 
   useEffect(() => {
-    // console.log("Updated Data being used: ", allData);
+    console.log("Updated Data being used: ", allData);
     console.log("The senator Selected: ", senatorData);
-    // console.log("THe courses: ", courseData);
+    console.log("THe courses: ", courseData);
     console.log("The senate selected: ", senateSelected);
   }, [allData, senatorData, senateSelected, courseData]);
 
