@@ -11,13 +11,9 @@ export async function GET(
     // console.log("Senate num: ", senatorNumber);
     const { data } = await fetchFormsData();
 
-    // Log the raw data
-    // console.log("Raw Data:", JSON.stringify(data, null, 2));
-
-    // Filter the data
     const filteredResult = data.filter((row) => {
       return row.selection.some((selectedSenator: string) => {
-        return !!selectedSenator.match(`${senatorNumber}\\.`);
+        return !!selectedSenator.match(`^${senatorNumber}\\.`);
       });
     });
 
