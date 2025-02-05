@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
@@ -146,7 +146,7 @@ export default function Home() {
         height={600}
         className="mb-10  cursor-pointer hover:animate-pulse"
       />
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {/*{senatorNames.map((senator, index) => (*/}
         {/*  <Image*/}
         {/*    key={index}*/}
@@ -313,17 +313,11 @@ export default function Home() {
           {filterSelected === "All Departments" ? (
             <PieChartWithLabels />
           ) : filterSelected === "By Senator" ? (
-            !senatorData ? (
-              <p className="text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">
-                Choose a senator
-              </p>
-            ) : (
-              <BarChartHorizontal
-                title={filterSelected}
-                description={filterDescriptions[filterSelected]}
-                data={getDataForSenate(senatorData)}
-              />
-            )
+            <BarChartHorizontal
+              title={filterSelected}
+              description={filterDescriptions[filterSelected]}
+              data={allData}
+            />
           ) : (
             <BarChartHorizontal
               title={filterSelected}
@@ -333,6 +327,15 @@ export default function Home() {
           )}
         </div>
       </div>
+      <footer className="mt-10">
+        <Image
+          src={"/graphics/footer.png"}
+          onClick={() => redirect("")}
+          width={400}
+          height={300}
+          alt={"Footer"}
+        />
+      </footer>
     </div>
   );
 }
