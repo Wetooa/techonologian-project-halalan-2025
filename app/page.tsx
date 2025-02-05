@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
@@ -316,7 +316,7 @@ export default function Home() {
             <BarChartHorizontal
               title={filterSelected}
               description={filterDescriptions[filterSelected]}
-              data={allData}
+              data={getDataCountForSenate(senatorData)}
             />
           ) : (
             <BarChartHorizontal
