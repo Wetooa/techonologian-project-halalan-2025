@@ -9,9 +9,6 @@ import { isArray } from "google-spreadsheet/src/lib/lodash";
 type DataSenator = {
   selection: string[];
 };
-type DataDepartment = {
-  department: string[];
-};
 
 function fetchAll() {
   return fetch("http://localhost:3000/api/all", {
@@ -98,17 +95,21 @@ function getDataCountForSenate(data) {
   return;
 }
 
-function getAllDepartments(data: DataDepartment[]) {
-  const departments = new Set<string>();
+function getAllDepartments(data) {
+  console.log("Data taken: ", data);
+  if (data) {
+    const departmentCounts = {};
 
-  data.forEach((item) => {
-    item.department.forEach((dep) => {
-      const department = dep.split(".")[0];
-      departments.add(department);
+    data.forEach((student) => {
+      const dep = student.department;
+      if (dep) {
+        departmentCounts[dep] = (departmentCounts[dep] || 0) + 1;
+      }
     });
-  });
 
-  return Array.from(departments);
+    return Object.entries(departmentCounts);
+  }
+  return;
 }
 
 export const ChosenSenate = createContext<{
@@ -116,13 +117,20 @@ export const ChosenSenate = createContext<{
   setSenateSelected: React.Dispatch<React.SetStateAction<string | null>>;
 } | null>(null);
 
+export const ChosenDepartment = createContext<{
+  departmentSelected: string | null;
+  setDepartmentSelected: React.Dispatch<React.SetStateAction<string | null>>;
+} | null>(null);
+
 export default function Home() {
-  const [senateSelected, setSenateSelected] = useState(null);
   const [ReceiveData, setReceiveData] = useState<any[]>([]);
   const [allData, setAllData] = useState<any[]>([]);
-
-  const [departmentData, setDepartmentData] = useState<any>(null);
   const [senatorData, setSenatorData] = useState<any[]>([]);
+  const [departmentData, setDepartmentData] = useState<any[]>([]);
+  const [senateSelected, setSenateSelected] = useState<string | null>(null);
+  const [departmentSelected, setDepartmentSelected] = useState<string | null>(
+    null
+  );
   const [totalVotes, setTotalVotes] = useState(0);
 
   // Fetch data and set up polling
@@ -130,22 +138,24 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const allResponse = await fetchAll();
-        const departmentResponse = await fetchByDepartment("BSCS");
         let senatorResponse = null;
         if (senateSelected) {
           senatorResponse = await fetchBySenator(senateSelected);
+          setSenatorData(senatorResponse);
+        }
+        let departmentResponse = null;
+        if (departmentSelected) {
+          departmentResponse = await fetchByDepartment(departmentSelected);
+          setDepartmentData(departmentResponse);
         }
         setReceiveData(() => {
           return allResponse;
         });
-        setSenatorData(senatorResponse);
-        setDepartmentData(departmentResponse);
         setTotalVotes(
           allResponse.reduce((sum: number, item: isArray) => sum + item[1], 0)
         );
 
         // console.log("All Data:", allResponse);
-        console.log("Department Data:", departmentResponse);
         // console.log("Senator Data:", senatorResponse);
       } catch (error) {
         console.error("There was a problem fetching data:", error);
@@ -158,13 +168,18 @@ export default function Home() {
   }, [senateSelected]);
 
   useEffect(() => {
-    // console.log("Updated Data being used: ", ReceiveData);
     // console.log("The senator Selected: ", senatorData);
-    console.log("THe Department Selected: ", departmentData);
-    console.log("THe Department Votes: ", departmentData);
     // console.log("The senate selected: ", senateSelected);
+    console.log("The department selected: ", departmentSelected);
+    console.log("The department's data: ", departmentData);
     setAllData(getDataAll(ReceiveData));
-  }, [ReceiveData, senatorData, senateSelected, departmentData]);
+  }, [
+    ReceiveData,
+    senatorData,
+    senateSelected,
+    departmentSelected,
+    departmentData,
+  ]);
 
   const filterDescriptions = {
     All: "Displays all available data without any filtering.",
@@ -302,11 +317,11 @@ export default function Home() {
           >
             {/* Inner container with padding */}
             <div className="p-10">
-              {/* <ChosenSenate.Provider
-                value={{ senateSelected, setSenateSelected }}
+              <ChosenDepartment.Provider
+                value={{ departmentSelected, setDepartmentSelected }}
               >
-                <DropDownMenu senatorNames={allData} />
-              </ChosenSenate.Provider> */}
+                <DropDownMenu senatorNames={getAllDepartments(ReceiveData)} />
+              </ChosenDepartment.Provider>
             </div>
           </div>
 
@@ -349,7 +364,23 @@ export default function Home() {
           className="bg-[#1A1A1A] w-full  h-full rounded-md p-5 flex flex-col gap-5 bg-opacity-50"
         >
           {filterSelected === "All Departments" ? (
-            <PieChartWithLabels data={allData} />
+            <BarChartHorizontal
+              title={filterSelected}
+              description={filterDescriptions[filterSelected]}
+              data={getAllDepartments(ReceiveData)}
+            />
+          ) : filterSelected === "By Department" ? (
+            !departmentSelected ? (
+              <p className="text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">
+                Choose a Department
+              </p>
+            ) : (
+              <BarChartHorizontal
+                title={filterSelected}
+                description={filterDescriptions[filterSelected]}
+                data={getAllDepartments(ReceiveData)}
+              />
+            )
           ) : filterSelected === "By Senator" ? (
             !senateSelected ? (
               <p className="text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">

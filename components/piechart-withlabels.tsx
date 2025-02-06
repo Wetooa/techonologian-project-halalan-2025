@@ -24,37 +24,33 @@ const chartData = [
   { browser: "other", visitors: 90, fill: "var(--color-other)" },
 ];
 
-interface ChartProps {
-  data: Array<{ senatorName: string; votes: number }>;
-}
+const chartConfig = {
+  visitors: {
+    label: "Visitors",
+  },
+  chrome: {
+    label: "Chrome",
+    color: "hsl(var(--chart-1))",
+  },
+  safari: {
+    label: "Safari",
+    color: "hsl(var(--chart-2))",
+  },
+  firefox: {
+    label: "Firefox",
+    color: "hsl(var(--chart-3))",
+  },
+  edge: {
+    label: "Edge",
+    color: "hsl(var(--chart-4))",
+  },
+  other: {
+    label: "Other",
+    color: "hsl(var(--chart-5))",
+  },
+} satisfies ChartConfig;
 
-export function PieChartWithLabels(props: ChartProps) {
-  const chartConfig = {
-    visitors: {
-      label: "Visitors",
-    },
-    chrome: {
-      label: "Chrome",
-      color: "hsl(var(--chart-1))",
-    },
-    safari: {
-      label: "Safari",
-      color: "hsl(var(--chart-2))",
-    },
-    firefox: {
-      label: "Firefox",
-      color: "hsl(var(--chart-3))",
-    },
-    edge: {
-      label: "Edge",
-      color: "hsl(var(--chart-4))",
-    },
-    other: {
-      label: "Other",
-      color: "hsl(var(--chart-5))",
-    },
-  } satisfies ChartConfig;
-
+export function PieChartWithLabels() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">

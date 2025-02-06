@@ -1,6 +1,6 @@
 "use client";
 
-import { ChosenSenate } from "@/app/page";
+import { ChosenSenate, ChosenDepartment } from "@/app/page";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,21 +15,34 @@ import {
 import { useState } from "react";
 
 interface DropDownMenuProps {
-  senatorNames: string[];
+  senatorNames: any[];
 }
 
 export function DropDownMenu({ senatorNames }: DropDownMenuProps) {
-  const { senateSelected, setSenateSelected } = React.useContext(ChosenSenate);
+  const senateContext = React.useContext(ChosenSenate);
+  const departmentContext = React.useContext(ChosenDepartment);
+
   const [selectedSenator, setSelectedSenator] = useState<string>(
-    senatorNames[0] || "Select Senator"
+    senateContext
+      ? senatorNames[0] || "Select Senator"
+      : senatorNames[0] || "Select Department"
   );
 
   const handleSelect = (senatorName: string) => {
     setSelectedSenator(senatorName);
     const senatorNumber = senatorName.split(".")[0];
-    setSenateSelected(senatorNumber);
 
-    console.log(senatorNumber);
+    if (senateContext) {
+      // Senate context is active
+      senateContext.setSenateSelected(senatorNumber);
+      console.log("Senate selected:", senatorNumber);
+    } else if (departmentContext) {
+      // Department context is active
+      departmentContext.setDepartmentSelected(senatorNumber);
+      console.log("Department selected:", senatorNumber);
+    } else {
+      console.warn("No context available!");
+    }
   };
   return (
     <DropdownMenu>
@@ -41,7 +54,12 @@ export function DropDownMenu({ senatorNames }: DropDownMenuProps) {
         align="start"
         side="bottom"
       >
-        <DropdownMenuLabel>Senator Names</DropdownMenuLabel>
+        {senateContext ? (
+          <DropdownMenuLabel>Senator Names</DropdownMenuLabel>
+        ) : (
+          <DropdownMenuLabel>Departments</DropdownMenuLabel>
+        )}
+
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={selectedSenator}
