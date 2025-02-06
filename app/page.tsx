@@ -165,7 +165,7 @@ export default function Home() {
 
     const intervalId = setInterval(fetchData, 50000000);
     return () => clearInterval(intervalId);
-  }, [senateSelected]);
+  }, [senateSelected, departmentSelected]);
 
   useEffect(() => {
     // console.log("The senator Selected: ", senatorData);
@@ -378,7 +378,7 @@ export default function Home() {
               <BarChartHorizontal
                 title={filterSelected}
                 description={filterDescriptions[filterSelected]}
-                data={getAllDepartments(ReceiveData)}
+                data={departmentData}
               />
             )
           ) : filterSelected === "By Senator" ? (

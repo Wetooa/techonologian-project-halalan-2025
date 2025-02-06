@@ -30,16 +30,16 @@ export function DropDownMenu({ senatorNames }: DropDownMenuProps) {
 
   const handleSelect = (senatorName: string) => {
     setSelectedSenator(senatorName);
-    const senatorNumber = senatorName.split(".")[0];
 
     if (senateContext) {
+      const senatorNumber = senatorName.split(".")[0];
       // Senate context is active
       senateContext.setSenateSelected(senatorNumber);
       console.log("Senate selected:", senatorNumber);
     } else if (departmentContext) {
       // Department context is active
-      departmentContext.setDepartmentSelected(senatorNumber);
-      console.log("Department selected:", senatorNumber);
+      departmentContext.setDepartmentSelected(senatorName);
+      console.log("Department selected:", senatorName);
     } else {
       console.warn("No context available!");
     }
