@@ -5,6 +5,7 @@ import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
 import { PieChartWithLabels } from "@/components/piechart-withlabels";
 import { isArray } from "google-spreadsheet/src/lib/lodash";
+import { Pie } from "recharts";
 
 type DataSenator = {
   selection: string[];
@@ -364,11 +365,7 @@ export default function Home() {
           className="bg-[#1A1A1A] w-full  h-full rounded-md p-5 flex flex-col gap-5 bg-opacity-50"
         >
           {filterSelected === "All Departments" ? (
-            <BarChartHorizontal
-              title={filterSelected}
-              description={filterDescriptions[filterSelected]}
-              data={getAllDepartments(ReceiveData)}
-            />
+            <PieChartWithLabels data={getAllDepartments(ReceiveData)} />
           ) : filterSelected === "By Department" ? (
             !departmentSelected ? (
               <p className="text-white font-bold font-sans lg:text-3xl sm-text-2xl cursor-pointer">

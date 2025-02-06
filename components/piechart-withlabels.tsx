@@ -1,6 +1,6 @@
 "use client";
 
-import { LabelList, Pie, PieChart } from "recharts";
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -16,41 +16,34 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-];
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
+interface PieChartWithLabelsProps {
+  data: Array<[string, number]>;
+}
 
-export function PieChartWithLabels() {
+export function PieChartWithLabels({ data }: PieChartWithLabelsProps) {
+  const chartData = data.map(([name, visitors], index) => ({
+    Department: name,
+    visitors: visitors,
+    fill: `hsl(var(--chart-${index + 1}))`,
+  }));
+
+  // Generate dynamic chartConfig
+  const chartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    ...Object.fromEntries(
+      data.map(([name], index) => [
+        name,
+        {
+          label: name,
+          color: `hsl(var(--chart-${index + 1}))`,
+        },
+      ])
+    ),
+  } satisfies ChartConfig;
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -62,27 +55,24 @@ export function PieChartWithLabels() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
+          className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
           <PieChart>
-            <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" hideLabel />}
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <Pie
+              data={chartData}
+              dataKey="visitors"
+              label
+              nameKey="Department"
             />
-            <Pie data={chartData} dataKey="visitors">
-              <LabelList
-                dataKey="browser"
-                className="fill-background"
-                stroke="none"
-                fontSize={12}
-                formatter={(value: keyof typeof chartConfig) =>
-                  chartConfig[value]?.label
-                }
-              />
-            </Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm"></CardFooter>
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="leading-none text-muted-foreground">
+          Showing total visitors for the last 6 months
+        </div>
+      </CardFooter>
     </Card>
   );
 }
