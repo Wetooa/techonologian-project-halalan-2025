@@ -23,6 +23,7 @@ export function courseToDepartment(course: string) {
     BSCS: "CCS",
     BSN: "CNHS",
     BSBA: "CMB",
+    "AB-COMM": "CASE",
   };
 
   return COURSE_TO_DEP[course] || "OTHERS";
