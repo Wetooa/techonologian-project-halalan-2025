@@ -80,14 +80,21 @@ export function BarChartHorizontal(props: ChartProps) {
                   bottom: 5,
                 }}
               >
-                <XAxis type="number" dataKey="votes" hide />
+                <XAxis
+                    type="number"
+                    dataKey="votes"
+                    domain={[0, Math.max(...chartData.map(d => d.votes)) * 1.5]} // Limits bar length
+                    tickFormatter={(value) => value.toLocaleString()}
+                    hide
+                />
+
                 <YAxis
                   dataKey="senatorName"
                   type="category"
                   tickLine={false}
                   tickMargin={10}
                   axisLine={false}
-                  width={150}
+                  width={130}
                   // tickFormatter={(value) =>
                   //     window.innerWidth > 640 ? value : value.slice(0, 3)
                   // }
