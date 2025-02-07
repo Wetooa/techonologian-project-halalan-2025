@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 
 interface DropDownMenuProps {
-  senatorNames: any[];
+  senatorNames: string[];
 }
 
 export function DropDownMenu({ senatorNames }: DropDownMenuProps) {
@@ -25,7 +25,7 @@ export function DropDownMenu({ senatorNames }: DropDownMenuProps) {
   const [selectedSenator, setSelectedSenator] = useState<string>(
     senateContext
       ? senatorNames[0] || "Select Senator"
-      : senatorNames[0] || "Select Department"
+      : senatorNames[0] || "Select Department",
   );
 
   const handleSelect = (senatorName: string) => {

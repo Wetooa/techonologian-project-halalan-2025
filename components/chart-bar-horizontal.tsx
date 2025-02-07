@@ -21,7 +21,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import Loading from "@/app/loading";
 
 interface ChartProps {
   title: string;
@@ -81,13 +80,12 @@ export function BarChartHorizontal(props: ChartProps) {
                   bottom: 5,
                 }}
               >
-
                 <XAxis
-                    type="number"
-                    dataKey="votes"
-                    domain={[0, Math.max(...chartData.map(d => d.votes)) * 1.5]} // Limits bar length
-                    tickFormatter={(value) => value.toLocaleString()}
-                    hide
+                  type="number"
+                  dataKey="votes"
+                  domain={[0, Math.max(...chartData.map((d) => d.votes)) * 1.5]} // Limits bar length
+                  tickFormatter={(value) => value.toLocaleString()}
+                  hide
                 />
 
                 <YAxis

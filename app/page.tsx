@@ -6,6 +6,7 @@ import { isArray } from "google-spreadsheet/src/lib/lodash";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
+import { FormData } from "@/utils/db";
 
 type DataSenator = {
   selection: string[];
@@ -104,7 +105,7 @@ function getDataCountForSenate(data) {
   if (data) {
     const courseCounts = {};
 
-    data.forEach((student) => {
+    data.forEach((student: FormData) => {
       const course = student.course;
       if (course) {
         courseCounts[course] = (courseCounts[course] || 0) + 1;
