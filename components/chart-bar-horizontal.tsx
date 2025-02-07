@@ -31,7 +31,7 @@ interface ChartProps {
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "#93170F",
   },
 } satisfies ChartConfig;
 
@@ -40,7 +40,7 @@ const calculateChartHeight = (dataLength: number) => {
 };
 
 export function BarChartHorizontal(props: ChartProps) {
-  console.log("BarChartHorizontal props: ", props);
+  // console.log("BarChartHorizontal props: ", props);
   const chartData = props.data
     ? props.data.map(([senatorName, votes]) => ({
         senatorName,
@@ -54,7 +54,7 @@ export function BarChartHorizontal(props: ChartProps) {
   const chartHeight = calculateChartHeight(chartData.length);
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto   ">
       <CardHeader>
         <CardTitle>{props.title}</CardTitle>
         <CardDescription>{props.description}</CardDescription>
@@ -65,7 +65,7 @@ export function BarChartHorizontal(props: ChartProps) {
           {/* Scrollable container */}
           <ChartContainer
             config={chartConfig}
-            className="w-full"
+            className="w-full "
             style={{ height: `${chartHeight}px` }}
           >
             <ResponsiveContainer width="100%" height={chartHeight}>
