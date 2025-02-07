@@ -7,6 +7,7 @@ import {PieChartWithLabels} from "@/components/piechart-withlabels";
 import {isArray} from "google-spreadsheet/src/lib/lodash";
 import Loading from "@/app/loading";
 import {all} from "axios";
+import {redirect} from "next/navigation";
 
 type DataSenator = {
     selection: string[];
@@ -227,6 +228,7 @@ export default function Home() {
                 height={600}
                 className="mb-10  cursor-pointer hover:animate-pulse"
             />
+            {allData.length === 0 && <Loading/>}
             <div
                 className="grid grid-cols-1 sm:grid-flow-col sm:grid-rows-6   sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 min-h-96">
                 {/*{senatorNames.map((senator, index) => (*/}
@@ -239,12 +241,13 @@ export default function Home() {
                 {/*    className="self-center w-full sm:w-32 md:w-40 lg:w-44 hover:scale-105"*/}
                 {/*  />*/}
                 {/*))}*/}
-                {allData.length > 0  ? allData.slice(0,12)
+                {  allData.slice(0,12)
                     .sort((a, b) => b[1] - a[1])
                     .map((senator, index) => (
                         <div
                             key={index}
                             className="flex items-center bg-[#FDFDFD]  drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105 cursor-pointer"
+                            onClick={() => redirect('http://google.com/search?q=' + senator[0].split(".")[1])}
                         >
                             <div className="flex flex-row items-center gap-5">
                                 <p
@@ -275,9 +278,9 @@ export default function Home() {
                                     : "0%"}
                             </p>
                         </div>
-                    )) :
+                    ))
 
-                <Loading/>}
+                }
             </div>
             <div
                 id=""
