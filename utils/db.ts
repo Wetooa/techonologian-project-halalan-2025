@@ -25,7 +25,7 @@ export function courseToDepartment(course: string) {
     BSBA: "CMB",
   };
 
-  return COURSE_TO_DEP[course] || "Unknown";
+  return COURSE_TO_DEP[course] || "OTHERS";
 }
 
 export interface FormData {
