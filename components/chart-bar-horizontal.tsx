@@ -21,6 +21,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import Loading from "@/app/loading";
 
 interface ChartProps {
   title: string;
@@ -80,6 +81,7 @@ export function BarChartHorizontal(props: ChartProps) {
                   bottom: 5,
                 }}
               >
+
                 <XAxis
                     type="number"
                     dataKey="votes"

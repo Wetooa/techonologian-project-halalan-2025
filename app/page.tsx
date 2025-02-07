@@ -239,8 +239,7 @@ export default function Home() {
                 {/*    className="self-center w-full sm:w-32 md:w-40 lg:w-44 hover:scale-105"*/}
                 {/*  />*/}
                 {/*))}*/}
-
-                {allData.slice(0,12)
+                {allData.length > 0  ? allData.slice(0,12)
                     .sort((a, b) => b[1] - a[1])
                     .map((senator, index) => (
                         <div
@@ -276,7 +275,9 @@ export default function Home() {
                                     : "0%"}
                             </p>
                         </div>
-                    ))}
+                    )) :
+
+                <Loading/>}
             </div>
             <div
                 id=""
