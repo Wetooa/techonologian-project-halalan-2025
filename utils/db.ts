@@ -14,6 +14,18 @@ export function courseToDepartment(course: string) {
     "BSME-MECH": "COEA",
     BSMinE: "COEA",
 
+    "MEng-CHE": "COEA",
+    "MEng-CE": "COEA",
+    "MEng-IE": "COEA",
+    "MEng-ME": "COEA",
+    "MEngEd-CHE": "COEA",
+    "MEngEd-CE": "COEA",
+    "MEngEd-CPE": "COEA",
+    "MEngEd-EE": "COEA",
+    "MEngEd-ECE": "COEA",
+    "MEngEd-IE": "COEA",
+    "MEngEd-ME": "COEA",
+
     BSA: "CMBA",
     BSAIS: "CMBA",
     BSMA: "CMBA",
@@ -30,6 +42,14 @@ export function courseToDepartment(course: string) {
     AOA: "CMBA",
     BPA: "CMBA",
 
+    "MBA-TH": "CMBA",
+    "MBA-NT": "CMBA",
+    "MPA-TH": "CMBA",
+    "MPA-NT": "CMBA",
+    "PhD-MGMT": "CMBA",
+    DBA: "CMBA",
+    DPA: "CMBA",
+
     "AB-COMM": "CASE",
     "AB-ENG": "CASE",
     BEEd: "CASE",
@@ -42,13 +62,32 @@ export function courseToDepartment(course: string) {
     "BSMA-AIM": "CASE",
     BSPSYCH: "CASE",
 
+    "MAEd-ELT": "CASE",
+    "MAEd-FIL": "CASE",
+    "MAEd-MATH": "CASE",
+    "MAEd-SCI": "CASE",
+    "MA-PSYCH": "CASE",
+    "MA-PSYCH-SP": "CASE",
+    "MA-PSYCH-CP": "CASE",
+    "MA-PSYCH-IP": "CASE",
+    "MST-MATH": "CASE",
+
     BSN: "CNAHS",
     BSPHARM: "CNAHS",
+    MSN: "CNAHS",
 
     BSCS: "CCS",
     BSIT: "CCS",
 
+    MCS: "CCS",
+    MSCS: "CASE",
+    MIT: "CASE",
+    DipComp: "CASE",
+    DIT: "CASE",
+
     BSC: "CCJ",
+
+    STEM: "SHS",
   };
 
   return COURSE_TO_DEP[course] || "OTHERS";
