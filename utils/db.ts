@@ -88,6 +88,9 @@ export function courseToDepartment(course: string) {
     BSC: "CCJ",
 
     STEM: "SHS",
+    GAS: "SHS",
+    ABM: "SHS",
+    HUMS: "SHS",
   };
 
   return COURSE_TO_DEP[course] || "OTHERS";
