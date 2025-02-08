@@ -131,7 +131,7 @@ export async function fetchFormsData() {
     name: "Name",
     email: "Institutional Email",
     studentId: "Student ID:",
-    course: "Course/Strand: (Example: BSCS, BSARCH, STEM)",
+    course: "Course:",
     isRegisteredVoter: "Are you a registered voter?",
     selection:
       "Please take a moment to thoughtfully select the candidates you genuinely support for the upcoming election:",
