@@ -1,3 +1,4 @@
+import { groupByField } from "@/lib/utils";
 import { fetchFormsData } from "@/utils/db";
 import { NextResponse } from "next/server";
 
@@ -12,14 +13,10 @@ export async function GET() {
 
 export async function fetchAllByCourse() {
   const { data } = await fetchFormsData();
-  const courseMap = new Map();
 
-  data.forEach((row) => {
-    const course = row.course;
-    courseMap.set(course, (courseMap.get(course) || 0) + 1);
-  });
+  const entries = groupByField(data, "course");
 
-  const result = Array.from(courseMap.entries());
+  const sortedCourses = Array.from(entries).sort((a, b) => b[1] - a[1]);
 
-  return result;
+  return sortedCourses;
 }

@@ -96,7 +96,7 @@ export function courseToDepartment(course: string) {
   return COURSE_TO_DEP[course] || "OTHERS";
 }
 
-export interface FormData {
+export type FormData = {
   timestamp: string;
   name: string;
   email: string;
@@ -105,7 +105,9 @@ export interface FormData {
   department: string;
   isRegisteredVoter: string;
   selection: string[];
-}
+};
+
+export type FormDataGroupKeys = Exclude<keyof FormData, "selection">;
 
 export async function fetchFormsData() {
   const URL = process.env.SHEET_ID;

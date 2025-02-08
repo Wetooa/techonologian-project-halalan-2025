@@ -1,26 +1,21 @@
+import { groupBySenator } from "@/lib/utils";
 import { fetchFormsData } from "@/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { department: string } }
+  { params }: { params: { department: string } },
 ) {
   try {
     const department = params.department;
     const { data } = await fetchFormsData();
 
-    const filteredDataByCourse = data.filter((row) => {
+    const filteredDataByDepartment = data.filter((row) => {
       return !!row.department.match(`${department}`);
     });
 
-    const map = new Map();
-    filteredDataByCourse.forEach((row) => {
-      row.selection.forEach((selectedSenator: string) => {
-        map.set(selectedSenator, (map.get(selectedSenator) || 0) + 1);
-      });
-    });
+    const result = groupBySenator(filteredDataByDepartment);
 
-    const result = Array.from(map.entries());
     return NextResponse.json({ data: result });
   } catch (message) {
     return NextResponse.json({ message }, { status: 500 });

@@ -52,9 +52,12 @@ function fetchTopSenators() {
 }
 
 function fetchByDepartment(department: string) {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}api/by-department/${department}`, {
-    method: "GET",
-  })
+  return fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}api/by-department/${department}`,
+    {
+      method: "GET",
+    },
+  )
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -70,9 +73,12 @@ function fetchByDepartment(department: string) {
 }
 
 function fetchBySenator(senatorNumber: string) {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}api/by-senator/${senatorNumber}`, {
-    method: "GET",
-  })
+  return fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}api/by-senator/${senatorNumber}`,
+    {
+      method: "GET",
+    },
+  )
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");

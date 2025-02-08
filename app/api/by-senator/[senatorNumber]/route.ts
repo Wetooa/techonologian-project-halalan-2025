@@ -1,14 +1,13 @@
+import { groupByField } from "@/lib/utils";
 import { fetchFormsData } from "@/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { senatorNumber: string } }
+  { params }: { params: { senatorNumber: string } },
 ) {
   try {
-    // console.log("Params: ", params);
     const senatorNumber = params.senatorNumber;
-    // console.log("Senate num: ", senatorNumber);
     const { data } = await fetchFormsData();
 
     const filteredResult = data.filter((row) => {
@@ -17,10 +16,9 @@ export async function GET(
       });
     });
 
-    // Log the filtered result
-    // console.log("Filtered Result:", JSON.stringify(filteredResult, null, 2));
+    const result = groupByField(filteredResult, "department");
 
-    return NextResponse.json({ data: filteredResult, senatorNumber });
+    return NextResponse.json({ data: result, senatorNumber });
   } catch (message) {
     return NextResponse.json({ message }, { status: 500 });
   }
