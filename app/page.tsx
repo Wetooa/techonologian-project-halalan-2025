@@ -12,7 +12,7 @@ type DataSenator = {
 };
 
 function fetchAll() {
-  return fetch("http://localhost:3000/api/all/", {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}api/all/`, {
     method: "GET",
   })
     .then((response) => {
@@ -32,7 +32,7 @@ function fetchAll() {
 }
 
 function fetchTopSenators() {
-  return fetch("http://localhost:3000/api/all/by-senator/top12", {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}api/all/by-senator/top12`, {
     method: "GET",
   })
     .then((response) => {
@@ -52,7 +52,7 @@ function fetchTopSenators() {
 }
 
 function fetchByDepartment(department: string) {
-  return fetch(`http://localhost:3000/api/by-department/${department}`, {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}api/by-department/${department}`, {
     method: "GET",
   })
     .then((response) => {
@@ -70,7 +70,7 @@ function fetchByDepartment(department: string) {
 }
 
 function fetchBySenator(senatorNumber: string) {
-  return fetch(`http://localhost:3000/api/by-senator/${senatorNumber}`, {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}api/by-senator/${senatorNumber}`, {
     method: "GET",
   })
     .then((response) => {
