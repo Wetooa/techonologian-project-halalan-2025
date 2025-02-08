@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import { FormData } from "@/utils/db";
+import { groupByField } from "@/lib/utils";
 
 type DataSenator = {
   selection: string[];
@@ -106,37 +107,8 @@ function getDataAll(data: DataSenator[]): [string, number][] {
   return Object.entries(counter);
 }
 
-function getDataCountForSenate(data: FormData[]) {
-  if (data) {
-    const courseCounts: Map<string, number> = new Map();
-
-    data.forEach((student: FormData) => {
-      const course = student.course;
-      if (course) {
-        courseCounts.set(course, (courseCounts.get(course) || 0) + 1);
-      }
-    });
-
-    return Object.entries(courseCounts);
-  }
-  return [];
-}
-
 function getAllDepartments(data: FormData[]) {
-  // console.log("Data taken: ", data);
-  if (data) {
-    const departmentCounts: Map<string, number> = new Map();
-
-    data.forEach((student) => {
-      const dep = student.department;
-      if (dep) {
-        departmentCounts.set(dep, (departmentCounts.get(dep) || 0) + 1);
-      }
-    });
-
-    return Object.keys(departmentCounts);
-  }
-  return [];
+  return groupByField(data, "department");
 }
 
 export const ChosenSenate = createContext<{
@@ -150,7 +122,7 @@ export const ChosenDepartment = createContext<{
 } | null>(null);
 
 export default function Home() {
-  const [ReceiveData, setReceiveData] = useState<FormData[]>([]);
+  const [receiveData, setReceiveData] = useState<FormData[]>([]);
   const [allData, setAllData] = useState<FormData[]>([]);
   const [senatorData, setSenatorData] = useState<FormData[]>([]);
   const [departmentData, setDepartmentData] = useState<FormData[]>([]);
@@ -213,9 +185,9 @@ export default function Home() {
     // console.log("The senate selected: ", senateSelected);
     // console.log("The department selected: ", departmentSelected);
     // console.log("The department's data: ", departmentData);
-    setAllData(getDataAll(ReceiveData));
+    setAllData(getDataAll(receiveData));
   }, [
-    ReceiveData,
+    receiveData,
     senatorData,
     senateSelected,
     departmentSelected,
@@ -366,7 +338,7 @@ export default function Home() {
               <ChosenDepartment.Provider
                 value={{ departmentSelected, setDepartmentSelected }}
               >
-                <DropDownMenu senatorNames={getAllDepartments(ReceiveData)} />
+                <DropDownMenu senatorNames={getAllDepartments(receiveData)} />
               </ChosenDepartment.Provider>
             </div>
           </div>
@@ -413,7 +385,7 @@ export default function Home() {
             <BarChartHorizontal
               title={filterSelected}
               description={filterDescriptions[filterSelected]}
-              data={getAllDepartments(ReceiveData)}
+              data={getAllDepartments(receiveData)}
             />
           ) : filterSelected === "By Department" ? (
             !departmentSelected ? (
@@ -436,7 +408,7 @@ export default function Home() {
               <BarChartHorizontal
                 title={filterSelected}
                 description={filterDescriptions[filterSelected]}
-                data={getDataCountForSenate(senatorData)}
+                data={senatorData}
               />
             )
           ) : (
