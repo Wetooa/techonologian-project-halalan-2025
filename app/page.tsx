@@ -2,9 +2,8 @@
 import Loading from "@/app/loading";
 import { BarChartHorizontal } from "@/components/chart-bar-horizontal";
 import { DropDownMenu } from "@/components/ui/radio-group";
-import { isArray } from "google-spreadsheet/src/lib/lodash";
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import { FormData } from "@/utils/db";
 
@@ -101,37 +100,37 @@ function getDataAll(data: DataSenator[]): [string, number][] {
   return Object.entries(counter);
 }
 
-function getDataCountForSenate(data) {
+function getDataCountForSenate(data: FormData[]) {
   if (data) {
-    const courseCounts = {};
+    const courseCounts: Map<string, number> = new Map();
 
     data.forEach((student: FormData) => {
       const course = student.course;
       if (course) {
-        courseCounts[course] = (courseCounts[course] || 0) + 1;
+        courseCounts.set(course, (courseCounts.get(course) || 0) + 1);
       }
     });
 
     return Object.entries(courseCounts);
   }
-  return;
+  return [];
 }
 
-function getAllDepartments(data) {
+function getAllDepartments(data: FormData[]) {
   // console.log("Data taken: ", data);
   if (data) {
-    const departmentCounts = {};
+    const departmentCounts: Map<string, number> = new Map();
 
     data.forEach((student) => {
       const dep = student.department;
       if (dep) {
-        departmentCounts[dep] = (departmentCounts[dep] || 0) + 1;
+        departmentCounts.set(dep, (departmentCounts.get(dep) || 0) + 1);
       }
     });
 
-    return Object.entries(departmentCounts);
+    return Object.keys(departmentCounts);
   }
-  return;
+  return [];
 }
 
 export const ChosenSenate = createContext<{
@@ -145,15 +144,17 @@ export const ChosenDepartment = createContext<{
 } | null>(null);
 
 export default function Home() {
-  const [ReceiveData, setReceiveData] = useState<any[]>([]);
-  const [allData, setAllData] = useState<any[]>([]);
-  const [senatorData, setSenatorData] = useState<any[]>([]);
-  const [departmentData, setDepartmentData] = useState<any[]>([]);
+  const [ReceiveData, setReceiveData] = useState<FormData[]>([]);
+  const [allData, setAllData] = useState<FormData[]>([]);
+  const [senatorData, setSenatorData] = useState<FormData[]>([]);
+  const [departmentData, setDepartmentData] = useState<FormData[]>([]);
   const [senateSelected, setSenateSelected] = useState<string | null>(null);
   const [departmentSelected, setDepartmentSelected] = useState<string | null>(
     null,
   );
   const [totalVotes, setTotalVotes] = useState(0);
+
+  const router = useRouter();
 
   // Fetch data and set up polling
   useEffect(() => {
@@ -161,21 +162,29 @@ export default function Home() {
       try {
         const allResponse = await fetchAll();
         const topSenators = await fetchTopSenators();
+
         let senatorResponse = null;
+
         if (senateSelected) {
           senatorResponse = await fetchBySenator(senateSelected);
           setSenatorData(senatorResponse);
         }
+
         let departmentResponse = null;
         if (departmentSelected) {
           departmentResponse = await fetchByDepartment(departmentSelected);
           setDepartmentData(departmentResponse);
         }
+
         setReceiveData(() => {
           return allResponse;
         });
+
         setTotalVotes(
-          topSenators.reduce((sum: number, item: isArray) => sum + item[1], 0),
+          topSenators.reduce(
+            (sum: number, item: [string, number]) => sum + item[1],
+            0,
+          ),
         );
 
         // console.log("All response ", allResponse)
@@ -245,7 +254,7 @@ export default function Home() {
               key={index}
               className="flex items-center bg-[#FDFDFD]  drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105 cursor-pointer"
               onClick={() =>
-                redirect(
+                router.push(
                   "http://google.com/search?q=" + senator[0].split(".")[1],
                 )
               }
