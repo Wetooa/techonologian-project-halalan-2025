@@ -2,11 +2,15 @@ import { fetchFormsData } from "@/db/db";
 import { groupByField } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { senatorNumber: string } },
-) {
+type Props = {
+  params: Promise<{
+    senatorNumber: string;
+  }>;
+};
+
+export async function GET(req: NextRequest, props: Props) {
   try {
+    const params = await props.params;
     const senatorNumber = params.senatorNumber;
     const { data } = await fetchFormsData();
 

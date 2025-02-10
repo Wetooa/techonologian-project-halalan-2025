@@ -1,5 +1,5 @@
+import { fetchAllBySenator } from "@/lib/api";
 import { NextResponse } from "next/server";
-import { fetchAllBySenator } from "../route";
 
 export async function GET() {
   try {

@@ -1,5 +1,5 @@
+import { fetchAllByDepartment } from "@/lib/api";
 import { NextResponse } from "next/server";
-import { fetchAllByDepartment } from "../route";
 
 export async function GET() {
   try {

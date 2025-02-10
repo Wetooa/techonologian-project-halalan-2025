@@ -1,5 +1,4 @@
-import { fetchFormsData } from "@/db/db";
-import { groupBySenator } from "@/lib/utils";
+import { fetchAllBySenator } from "@/lib/api";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -9,12 +8,4 @@ export async function GET() {
   } catch (message) {
     return NextResponse.json({ message }, { status: 500 });
   }
-}
-
-export async function fetchAllBySenator() {
-  const { data } = await fetchFormsData();
-
-  const result = groupBySenator(data);
-
-  return result;
 }

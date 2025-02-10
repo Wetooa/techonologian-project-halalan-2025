@@ -60,72 +60,79 @@ export function BarChartHorizontal(props: ChartProps) {
       </CardHeader>
       <CardContent>
         <div className="max-h-[600px] overflow-y-auto">
-          {" "}
-          {/* Scrollable container */}
           <ChartContainer
             config={chartConfig}
-            className="w-full "
+            className="w-full"
             style={{ height: `${chartHeight}px` }}
           >
-            <ResponsiveContainer width="100%" height={chartHeight}>
-              <BarChart
-                accessibilityLayer
-                data={chartData}
-                layout="vertical"
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 0,
-                  bottom: 5,
-                }}
-              >
-                <XAxis
-                  type="number"
-                  dataKey="votes"
-                  domain={[0, Math.max(...chartData.map((d) => d.votes)) * 1.5]} // Limits bar length
-                  tickFormatter={(value) => value.toLocaleString()}
-                  hide
-                />
-
-                <YAxis
-                  type="category"
-                  dataKey="item"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                  width={130}
-                  // tickFormatter={(value) =>
-                  //     window.innerWidth > 640 ? value : value.slice(0, 3)
-                  // }
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Bar
-                  dataKey="votes"
-                  fill="var(--color-desktop)"
-                  radius={5}
-                  barSize={30}
+            {props.data.length === 0 ? (
+              <h3 className="text-3xl text-center text-gray-600 italic">
+                No Votes Yet...
+              </h3>
+            ) : (
+              <ResponsiveContainer width="100%" height={chartHeight}>
+                <BarChart
+                  accessibilityLayer
+                  data={chartData}
+                  layout="vertical"
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 0,
+                    bottom: 5,
+                  }}
                 >
-                  <LabelList
+                  <XAxis
+                    type="number"
                     dataKey="votes"
-                    position="right"
-                    formatter={(value: never) => {
-                      const percentage = totalVotes
-                        ? ((value / totalVotes) * 100).toFixed(1) + "%"
-                        : "0%";
-                      return `${value} (${percentage})`;
-                    }}
-                    style={{
-                      fill: "black",
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                    }}
+                    domain={[
+                      0,
+                      Math.max(...chartData.map((d) => d.votes)) * 1.5,
+                    ]} // Limits bar length
+                    tickFormatter={(value) => value.toLocaleString()}
+                    hide
                   />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+
+                  <YAxis
+                    type="category"
+                    dataKey="item"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    width={130}
+                    // tickFormatter={(value) =>
+                    //     window.innerWidth > 640 ? value : value.slice(0, 3)
+                    // }
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Bar
+                    dataKey="votes"
+                    fill="var(--color-desktop)"
+                    radius={5}
+                    barSize={30}
+                  >
+                    <LabelList
+                      dataKey="votes"
+                      position="right"
+                      formatter={(value: never) => {
+                        const percentage = totalVotes
+                          ? ((value / totalVotes) * 100).toFixed(1) + "%"
+                          : "0%";
+                        return `${value} (${percentage})`;
+                      }}
+                      style={{
+                        fill: "black",
+                        fontWeight: "bold",
+                        fontSize: "12px",
+                      }}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </ChartContainer>
         </div>
       </CardContent>

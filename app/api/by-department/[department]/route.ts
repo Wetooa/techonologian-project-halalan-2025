@@ -2,11 +2,15 @@ import { groupBySenator } from "@/lib/utils";
 import { fetchFormsData } from "@/db/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { department: string } },
-) {
+type Props = {
+  params: Promise<{
+    department: string;
+  }>;
+};
+
+export async function GET(req: NextRequest, props: Props) {
   try {
+    const params = await props.params;
     const department = params.department;
     const { data } = await fetchFormsData();
 

@@ -126,7 +126,7 @@ export default function Home() {
   }, [departmentSelected]);
 
   return (
-    <div className="bg-cover h-auto bg-center bg-[url('/graphics/background.png')] scroll-auto h-auto w-screen flex flex-col justify-center items-center gap-10 p-10">
+    <div className="bg-cover h-auto bg-center bg-[url('/graphics/background.png')] scroll-auto w-screen flex flex-col justify-center items-center gap-10 p-10">
       <Image
         src={"/graphics/title.png"}
         alt={"Halalan 2025"}

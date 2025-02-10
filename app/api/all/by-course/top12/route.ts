@@ -1,5 +1,5 @@
+import { fetchAllByCourse } from "@/lib/api";
 import { NextResponse } from "next/server";
-import { fetchAllByCourse } from "../route";
 
 export async function GET() {
   try {
