@@ -1,5 +1,5 @@
+import { fetchFormsData } from "@/db/db";
 import { groupByField } from "@/lib/utils";
-import { fetchFormsData } from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {

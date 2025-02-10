@@ -1,5 +1,5 @@
 import { groupBySenator } from "@/lib/utils";
-import { fetchFormsData } from "@/utils/db";
+import { fetchFormsData } from "@/db/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

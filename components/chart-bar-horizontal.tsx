@@ -25,7 +25,7 @@ import {
 interface ChartProps {
   title: string;
   description: string;
-  data: Array<{ senatorName: string; votes: number }>;
+  data: [string, number][];
 }
 
 const chartConfig = {
@@ -40,10 +40,9 @@ const calculateChartHeight = (dataLength: number) => {
 };
 
 export function BarChartHorizontal(props: ChartProps) {
-  // console.log("BarChartHorizontal props: ", props);
   const chartData = props.data
-    ? props.data.map(([senatorName, votes]) => ({
-        senatorName,
+    ? props.data.map(([item, votes]) => ({
+        item,
         votes,
       }))
     : [];
@@ -89,8 +88,8 @@ export function BarChartHorizontal(props: ChartProps) {
                 />
 
                 <YAxis
-                  dataKey="senatorName"
                   type="category"
+                  dataKey="item"
                   tickLine={false}
                   tickMargin={10}
                   axisLine={false}
