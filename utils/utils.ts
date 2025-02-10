@@ -12,28 +12,28 @@ export type FormData = {
 export type FormDataGroupKeys = Exclude<keyof FormData, "selection">;
 
 const COURSE_TO_DEP: Record<string, string> = {
-  BSARCH: "COEA",
-  BSCHE: "COEA",
-  BSCE: "COEA",
-  BSCPE: "COEA",
-  BSEE: "COEA",
-  BSECE: "COEA",
-  BSIE: "COEA",
-  "BSME-CS": "COEA",
-  "BSME-MECH": "COEA",
-  BSMinE: "COEA",
+  BSARCH: "CEA",
+  BSCHE: "CEA",
+  BSCE: "CEA",
+  BSCPE: "CEA",
+  BSEE: "CEA",
+  BSECE: "CEA",
+  BSIE: "CEA",
+  "BSME-CS": "CEA",
+  "BSME-MECH": "CEA",
+  BSMinE: "CEA",
 
-  "MEng-CHE": "COEA",
-  "MEng-CE": "COEA",
-  "MEng-IE": "COEA",
-  "MEng-ME": "COEA",
-  "MEngEd-CHE": "COEA",
-  "MEngEd-CE": "COEA",
-  "MEngEd-CPE": "COEA",
-  "MEngEd-EE": "COEA",
-  "MEngEd-ECE": "COEA",
-  "MEngEd-IE": "COEA",
-  "MEngEd-ME": "COEA",
+  "MEng-CHE": "CEA",
+  "MEng-CE": "CEA",
+  "MEng-IE": "CEA",
+  "MEng-ME": "CEA",
+  "MEngEd-CHE": "CEA",
+  "MEngEd-CE": "CEA",
+  "MEngEd-CPE": "CEA",
+  "MEngEd-EE": "CEA",
+  "MEngEd-ECE": "CEA",
+  "MEngEd-IE": "CEA",
+  "MEngEd-ME": "CEA",
 
   BSA: "CMBA",
   BSAIS: "CMBA",
@@ -174,7 +174,7 @@ export const SENATOR_LIST = [
 export type Course = keyof typeof COURSE_TO_DEP;
 export type Senator = (typeof SENATOR_LIST)[number];
 export type Department =
-  | "COEA"
+  | "CEA"
   | "CMBA"
   | "CASE"
   | "CNAHS"

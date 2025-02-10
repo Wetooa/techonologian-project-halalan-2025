@@ -144,7 +144,7 @@ export default function Home() {
           return (
             <div
               key={index}
-              className="flex items-center bg-[#FDFDFD]  drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105 cursor-pointer"
+              className="flex items-center bg-[#FDFDFD]  drop-shadow-lg rounded-lg gap-7 justify-between p-3 hover:scale-105 cursor-pointer transition-all"
               onClick={() =>
                 router.push(
                   "http://google.com/search?q=" + senatorName + " senator",
@@ -205,32 +205,31 @@ export default function Home() {
           </header>
 
           <hr />
-
           <div key={"All"} onClick={() => setFilterSelected("All")}>
             <div
-              className={`text-white p-3 cursor-pointer hover:bg-[#141414]  ${
+              className={`text-white p-3 cursor-pointer hover:bg-[#141414] ${
                 filterSelected === "All" ? "bg-[#333333]" : ""
               }`}
             >
               <p>All</p>
             </div>
-            <hr />
           </div>
 
+          <hr />
           <div
             key={"All Departments"}
             onClick={() => setFilterSelected("All Departments")}
           >
             <div
-              className={`text-white p-3 cursor ${
+              className={`text-white p-3 cursor-pointer hover:bg-[#141414] ${
                 filterSelected === "All Departments" ? "bg-[#333333]" : ""
               }`}
             >
               <p>All Departments</p>
             </div>
-            <hr />
           </div>
 
+          <hr />
           <div
             key={"By Department"}
             onClick={() => setFilterSelected("By Department")}
